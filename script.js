@@ -726,7 +726,7 @@ let aberto = false;
 
 camera.position.copy(inicioCamera);
 
-document.getElementById("botaoAbrir").addEventListener("click", function () {
+function abrirGalaxia() {
   document.getElementById("abertura").classList.add("sumiu");
   document.getElementById("botaoMais").hidden = false;
   aberto = true;
@@ -738,6 +738,38 @@ document.getElementById("botaoAbrir").addEventListener("click", function () {
     progressoVoo = 0;
   }
   setTimeout(function () { document.getElementById("dica").style.opacity = "0.35"; }, 7000);
+}
+
+// "Toque para abrir": pede a senha (se ainda não entrou neste celular)
+const formAbertura = document.getElementById("formAbertura");
+const avisoAbertura = document.getElementById("avisoAbertura");
+
+document.getElementById("botaoAbrir").addEventListener("click", function () {
+  if (usuario) {
+    abrirGalaxia();
+    return;
+  }
+  document.getElementById("botaoAbrir").hidden = true;
+  formAbertura.hidden = false;
+  document.getElementById("senhaAbertura").focus();
+});
+
+formAbertura.addEventListener("submit", function (e) {
+  e.preventDefault();
+  const campo = document.getElementById("senhaAbertura");
+  const senha = arrumarSenha(campo.value);
+  if (!senha) { avisar(avisoAbertura, "Digite a senha.", true); return; }
+  if (senha !== SENHA) {
+    avisar(avisoAbertura, "vamo ta lembrando da senha ne flopadeeeeeeee!!!!!!!!", true);
+    return;
+  }
+  avisar(avisoAbertura, "");
+  campo.value = "";
+  campo.blur();
+  usuario = true; // a mesma senha também libera o "+ Adicionar"
+  try { localStorage.setItem("galaxia-entrou", "sim"); } catch (erro) {}
+  atualizarPainel();
+  abrirGalaxia();
 });
 
 // ===== Ajustar ao tamanho da tela =====
