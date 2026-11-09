@@ -1,0 +1,27 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /itens/{id} {
+      // Todo mundo que abre o site vê as frases e fotos
+      allow read: if true;
+
+      // Adicionar: só frases ou fotos no formato certo (a senha é pedida no site)
+      allow create: if request.resource.data.keys().hasOnly(['tipo', 'texto', 'imagem', 'criadoEm'])
+        && request.resource.data.tipo in ['frase', 'foto']
+        && request.resource.data.texto is string
+        && request.resource.data.texto.size() > 0
+        && request.resource.data.texto.size() <= 120
+        && request.resource.data.criadoEm is number
+        && (!('imagem' in request.resource.data)
+            || (request.resource.data.imagem is string
+                && request.resource.data.imagem.matches('^data:image/jpeg;base64,.*')
+                && request.resource.data.imagem.size() < 900000));
+
+      // Apagar (o botão "Apagar" do site)
+      allow delete: if true;
+
+      // Ninguém edita depois de salvo
+      allow update: if false;
+    }
+  }
+}

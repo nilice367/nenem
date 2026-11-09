@@ -1,0 +1,487 @@
+/* ===== Cores e fontes ===== */
+:root {
+  --ceu: #020810;
+  --texto: #effcff;
+  --rosa-claro: #bff6ff;   /* ciano claro */
+  --rosa: #00e5ff;         /* ciano */
+  --vidro: rgba(4, 20, 30, 0.75);
+  --borda: rgba(150, 240, 255, 0.3);
+  --fonte-letra: "Dancing Script", "Segoe Script", cursive;
+  --fonte-texto: "Quicksand", "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  height: 100dvh;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+  overflow: hidden;
+  background: var(--ceu);
+  color: var(--texto);
+  font-family: var(--fonte-texto);
+}
+
+#cena {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  cursor: grab;
+}
+
+[hidden] { display: none !important; }
+
+/* ===== Fotos em polaroid ===== */
+#fotos {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.polaroid {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100px;
+  padding: 6px 6px 0;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+  background: #f2feff;
+  border-radius: 10px;
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.45);
+  pointer-events: auto;
+  cursor: pointer;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+.polaroid img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.polaroid span {
+  display: block;
+  padding: 4px 2px 6px;
+  text-align: center;
+  font-family: var(--fonte-letra);
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 1.15;
+  color: #087a8f;
+}
+
+/* ===== Tela de abertura ===== */
+.abertura {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 16px;
+  text-align: center;
+  background: radial-gradient(ellipse at center, rgba(0, 60, 80, 0.55), var(--ceu) 70%);
+  transition: opacity 1.2s ease;
+}
+
+.abertura.sumiu {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.abertura p {
+  margin: 0;
+  color: var(--rosa-claro);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.abertura h1 {
+  margin: 0;
+  font-family: var(--fonte-letra);
+  font-size: clamp(3rem, 12vw, 5.5rem);
+  line-height: 1;
+  text-shadow: 0 0 24px rgba(0, 229, 255, 0.8);
+}
+
+.botao-abrir {
+  border: 1px solid var(--borda);
+  background: rgba(0, 229, 255, 0.18);
+  color: var(--texto);
+  font: 700 1rem var(--fonte-texto);
+  padding: 14px 28px;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.35);
+  animation: pulsar 2.2s ease-in-out infinite;
+}
+
+@keyframes pulsar {
+  50% {
+    box-shadow: 0 0 46px rgba(0, 229, 255, 0.7);
+    transform: scale(1.04);
+  }
+}
+
+/* ===== Dica ===== */
+.dica {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 16px;
+  padding: 0 16px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--rosa-claro);
+  opacity: 0.8;
+  pointer-events: none;
+  transition: opacity 1s;
+}
+
+/* ===== Cartão da foto ===== */
+.fundo-cartao {
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(5, 3, 10, 0.6);
+}
+
+.cartao {
+  width: min(380px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px 16px 20px;
+  background: var(--vidro);
+  border: 1px solid var(--borda);
+  border-radius: 22px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 60px rgba(0, 229, 255, 0.3);
+  animation: aparecer 0.35s ease-out;
+}
+
+@keyframes aparecer {
+  from { transform: scale(0.85); opacity: 0; }
+}
+
+.cartao img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.cartao p {
+  margin: 0;
+  text-align: center;
+  font-family: var(--fonte-letra);
+  font-size: 1.75rem;
+  line-height: 1.2;
+}
+
+.botao-voltar {
+  align-self: center;
+  border: 1px solid var(--borda);
+  background: transparent;
+  color: var(--rosa-claro);
+  font: 700 0.9rem var(--fonte-texto);
+  padding: 8px 20px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.botao-abrir:focus-visible,
+.botao-voltar:focus-visible,
+.polaroid:focus-visible {
+  outline: 2px solid var(--rosa);
+  outline-offset: 3px;
+}
+
+/* ===== Botão + Adicionar ===== */
+.botao-mais {
+  position: fixed;
+  right: 16px;
+  top: calc(16px + env(safe-area-inset-top, 0px));
+  z-index: 4;
+  border: 1px solid var(--borda);
+  background: rgba(0, 229, 255, 0.15);
+  color: var(--texto);
+  font: 700 0.95rem var(--fonte-texto);
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+  backdrop-filter: blur(6px);
+}
+
+/* ===== Painel de adicionar ===== */
+.painel-fundo {
+  position: fixed;
+  inset: 0;
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(2, 8, 16, 0.65);
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.painel {
+  width: min(440px, 100%);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  background: var(--vidro);
+  border: 1px solid var(--borda);
+  border-radius: 22px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 60px rgba(0, 229, 255, 0.25);
+  animation: aparecer 0.3s ease-out;
+}
+
+.painel-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.painel h2 {
+  margin: 0;
+  font-family: var(--fonte-letra);
+  font-size: 1.9rem;
+}
+
+.painel h3 {
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rosa-claro);
+}
+
+.botao-fechar {
+  border: 0;
+  background: transparent;
+  color: var(--rosa-claro);
+  font-size: 1.8rem;
+  line-height: 1;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.painel form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.painel-texto {
+  margin: 0;
+  color: var(--rosa-claro);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.painel label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--rosa-claro);
+}
+
+.painel input[type="email"],
+.painel input[type="password"],
+.painel input#texto,
+.painel input[type="file"] {
+  width: 100%;
+  font: 500 1rem var(--fonte-texto);
+  color: var(--texto);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  padding: 11px 12px;
+}
+
+.escolha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.escolha label {
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid var(--borda);
+  border-radius: 999px;
+  color: var(--texto);
+  cursor: pointer;
+}
+
+.escolha label:has(input:checked) {
+  background: rgba(0, 229, 255, 0.18);
+  border-color: var(--rosa);
+}
+
+.previa {
+  width: 140px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 12px;
+  align-self: center;
+}
+
+.botao-principal {
+  border: 0;
+  background: var(--rosa);
+  color: #01222a;
+  font: 700 1rem var(--fonte-texto);
+  padding: 13px 20px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.botao-principal:disabled { opacity: 0.6; cursor: wait; }
+
+.aviso {
+  margin: 0;
+  min-height: 1.2em;
+  font-size: 0.88rem;
+  color: var(--rosa-claro);
+}
+
+.aviso.erro { color: #ff9a9a; }
+
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lista li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+}
+
+.lista img {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex: none;
+}
+
+.lista span {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 0.9rem;
+}
+
+.lista button {
+  flex: none;
+  border: 1px solid rgba(255, 154, 154, 0.5);
+  background: transparent;
+  color: #ff9a9a;
+  font: 700 0.8rem var(--fonte-texto);
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.lista .vazio {
+  border-style: dashed;
+  color: var(--rosa-claro);
+  font-size: 0.88rem;
+  justify-content: center;
+}
+
+.esqueci {
+  align-self: center;
+  text-align: center;
+  color: var(--rosa);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 4px;
+}
+
+.esqueci:focus-visible {
+  outline: 2px solid var(--rosa);
+  outline-offset: 3px;
+}
+
+.botao-sair {
+  align-self: center;
+  border: 0;
+  background: transparent;
+  color: var(--rosa-claro);
+  text-decoration: underline;
+  font: 500 0.85rem var(--fonte-texto);
+  cursor: pointer;
+}
+
+.botao-mais:focus-visible,
+.botao-fechar:focus-visible,
+.botao-principal:focus-visible,
+.botao-sair:focus-visible,
+.lista button:focus-visible {
+  outline: 2px solid var(--rosa);
+  outline-offset: 3px;
+}
+
+/* ===== Celular ===== */
+@media (max-width: 600px) {
+  .polaroid { width: 70px; padding: 4px 4px 0; border-radius: 7px; }
+  .polaroid img { border-radius: 4px; }
+  .polaroid span { font-size: 8px; padding: 3px 1px 4px; }
+
+  .abertura h1 { font-size: 3.6rem; }
+  .botao-abrir { padding: 16px 30px; font-size: 1.05rem; }
+
+  .dica { font-size: 0.78rem; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
+
+  .cartao { padding: 12px 12px 16px; gap: 10px; }
+  .cartao p { font-size: 1.45rem; }
+  .botao-voltar { padding: 12px 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .botao-abrir, .cartao { animation: none; }
+}

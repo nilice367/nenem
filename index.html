@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#020810">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>Para meu Bebê</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@500;700&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Cena 3D -->
+  <canvas id="cena"></canvas>
+
+  <!-- Fotos flutuando (posicionadas pelo script.js) -->
+  <div id="fotos"></div>
+
+  <!-- Tela de abertura -->
+  <div class="abertura" id="abertura">
+    <p>Uma galáxia feita para</p>
+    <h1>Meu Bebê</h1>
+    <button class="botao-abrir" id="botaoAbrir" type="button">Toque para abrir ♡</button>
+  </div>
+
+  <!-- Dica -->
+  <div class="dica" id="dica">Arraste para girar · Toque nas fotos</div>
+
+  <!-- Cartão que abre ao tocar numa foto -->
+  <div class="fundo-cartao" id="fundoCartao" hidden>
+    <div class="cartao">
+      <img id="cartaoImagem" src="" alt="">
+      <p id="cartaoMensagem"></p>
+      <button class="botao-voltar" id="botaoVoltar" type="button">Voltar para a galáxia</button>
+    </div>
+  </div>
+
+  <!-- Botão para adicionar frases e fotos -->
+  <button class="botao-mais" id="botaoMais" type="button" hidden>+ Adicionar</button>
+
+  <!-- Painel de adicionar -->
+  <div class="painel-fundo" id="painel" hidden>
+    <div class="painel" role="dialog" aria-modal="true" aria-labelledby="painelTitulo">
+      <div class="painel-topo">
+        <h2 id="painelTitulo">Adicionar na galáxia</h2>
+        <button class="botao-fechar" id="fecharPainel" type="button" aria-label="Fechar">×</button>
+      </div>
+
+      <p class="painel-texto" id="semConexao" hidden>Não consegui conectar ao banco de dados. Verifique a internet e recarregue a página.</p>
+
+      <!-- Entrar -->
+      <form id="formEntrar" hidden>
+        <p class="painel-texto">Só a gente pode adicionar coisas aqui ♡</p>
+        <label>Senha: o dia em que começamos a conversar
+          <input id="senha" type="password" inputmode="numeric" autocomplete="current-password" required>
+        </label>
+        <button class="botao-principal" type="submit">Entrar</button>
+        <p class="aviso" id="avisoEntrar"></p>
+        <a class="esqueci" href="https://wa.me/558581698696?text=amor%20lindo%20do%20meu%20cora%C3%A7%C3%A3o%2C%20perfeita%2C%20dona%20de%20mim%2C%20linda%2C%20eu%20perdi%20a%20senha%20pq%20sou%20flopado" target="_blank" rel="noopener">Esqueci a senha amor lindo do meu coração</a>
+      </form>
+
+      <!-- Adicionar -->
+      <form id="formAdicionar" hidden>
+        <div class="escolha">
+          <label><input type="radio" name="tipo" value="frase" checked> Só uma frase</label>
+          <label><input type="radio" name="tipo" value="foto"> Foto com mensagem</label>
+        </div>
+
+        <label id="campoFoto" hidden>Foto
+          <input id="arquivoFoto" type="file" accept="image/*">
+        </label>
+        <img id="previa" class="previa" src="" alt="Prévia da foto" hidden>
+
+        <label><span id="rotuloTexto">Frase</span>
+          <input id="texto" maxlength="120" required placeholder="Ex.: Você é meu sol">
+        </label>
+
+        <button class="botao-principal" id="botaoSalvar" type="submit">Colocar na galáxia ♡</button>
+        <p class="aviso" id="avisoAdicionar"></p>
+
+        <h3>O que já foi adicionado</h3>
+        <ul class="lista" id="listaItens"></ul>
+
+        <button class="botao-sair" id="botaoSair" type="button">Sair da conta</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Three.js (biblioteca 3D) -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <!-- Firebase (banco de dados e login) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+  <script src="script.js"></script>
+</body>
+</html>
