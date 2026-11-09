@@ -131,6 +131,12 @@ html, body {
   animation: pulsar 2.2s ease-in-out infinite;
 }
 
+.botao-abrir:disabled {
+  cursor: wait;
+  opacity: 0.7;
+  animation: none;
+}
+
 @keyframes pulsar {
   50% {
     box-shadow: 0 0 46px rgba(0, 229, 255, 0.7);

@@ -50,8 +50,8 @@ if (!window.THREE) {
 }
 
 // ===== Cena, câmera e controles =====
-const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, celular ? 1.5 : 2));
+const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: !celular, powerPreference: "high-performance" });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, celular ? 1 : 2));
 
 const cena = new THREE.Scene();
 cena.background = new THREE.Color(0x020810);
@@ -106,7 +106,7 @@ function criarPontos(posicoes, cores, tamanho) {
 
 // ===== Estrelas no fundo =====
 (function criarEstrelas() {
-  const n = 4000;
+  const n = celular ? 1500 : 4000;
   const pos = new Float32Array(n * 3);
   const cor = new Float32Array(n * 3);
   for (let i = 0; i < n; i++) {
@@ -129,7 +129,7 @@ function criarPontos(posicoes, cores, tamanho) {
 
 // ===== Galáxia em espiral =====
 const galaxia = (function criarGalaxia() {
-  const n = celular ? 14000 : 26000;
+  const n = celular ? 8000 : 26000;
   const bracos = 3;
   const raio = 13;
   const giro = 0.9;
@@ -156,7 +156,7 @@ const galaxia = (function criarGalaxia() {
     cor[i * 3 + 2] = c.b;
   }
 
-  const pontos = criarPontos(pos, cor, 0.11);
+  const pontos = criarPontos(pos, cor, celular ? 0.14 : 0.11);
   cena.add(pontos);
 
   // brilho no centro
@@ -187,7 +187,7 @@ coracao.position.set(0, 6.5, 0);
 cena.add(coracao);
 
 (function criarCoracao() {
-  const n = 5000;
+  const n = celular ? 2500 : 5000;
   const escala = 0.24;
   const pos = new Float32Array(n * 3);
   const cor = new Float32Array(n * 3);
@@ -209,7 +209,7 @@ cena.add(coracao);
     cor[i * 3 + 1] = c.g;
     cor[i * 3 + 2] = c.b;
   }
-  coracao.add(criarPontos(pos, cor, 0.09));
+  coracao.add(criarPontos(pos, cor, celular ? 0.11 : 0.09));
 })();
 
 // ===== Texto brilhante no espaço =====
@@ -259,7 +259,7 @@ const coracoezinhos = [];
   g.fill();
   const textura = new THREE.CanvasTexture(c);
 
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < (celular ? 18 : 40); i++) {
     const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: textura, transparent: true, depthWrite: false, opacity: 0.8 }));
     const r = 3 + Math.random() * 14;
     const a = Math.random() * Math.PI * 2;
@@ -507,7 +507,7 @@ function diminuirFoto(arquivo) {
     img.onload = function () {
       const c = document.createElement("canvas");
       const g = c.getContext("2d");
-      let maximo = 800;
+      let maximo = 600;
       let qualidade = 0.82;
       let dados;
       do {
@@ -520,7 +520,7 @@ function diminuirFoto(arquivo) {
         dados = c.toDataURL("image/jpeg", qualidade);
         maximo *= 0.8;
         qualidade -= 0.08;
-      } while (dados.length > 600000 && maximo > 200);
+      } while (dados.length > 200000 && maximo > 200);
       URL.revokeObjectURL(url);
       ok(dados);
     };
@@ -661,7 +661,26 @@ function desenharLista() {
 }
 
 // Ligar o Firebase
-(function ligarFirebase() {
+// O Firebase só é baixado depois que a galáxia já apareceu, para abrir mais rápido
+function carregarScript(endereco) {
+  return new Promise(function (ok, falhou) {
+    const s = document.createElement("script");
+    s.src = endereco;
+    s.onload = ok;
+    s.onerror = falhou;
+    document.body.appendChild(s);
+  });
+}
+
+function carregarFirebase() {
+  return carregarScript("https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js")
+    .then(function () { return carregarScript("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"); })
+    .catch(function () { console.warn("Não consegui baixar o Firebase"); });
+}
+
+setTimeout(function () { carregarFirebase().then(ligarFirebase); }, 300);
+
+function ligarFirebase() {
   if (!window.firebase) {
     console.warn("Firebase não carregou");
     return;
@@ -696,7 +715,7 @@ function desenharLista() {
   }, function (erro) {
     console.warn("Não consegui ler o banco de dados", erro);
   });
-})();
+}
 
 // ===== Abertura com a câmera voando =====
 const inicioCamera = new THREE.Vector3(0, 34, 70);
@@ -779,3 +798,8 @@ function animar() {
 }
 
 animar();
+
+// Tudo pronto: libera o botão de abrir
+const botaoAbrir = document.getElementById("botaoAbrir");
+botaoAbrir.disabled = false;
+botaoAbrir.textContent = "Toque para abrir ♡";
