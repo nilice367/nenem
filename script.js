@@ -6,12 +6,12 @@
 const NOME = "Kauã";
 
 const FOTOS = [
-  { arquivo: "fotos/1.jpg", mensagem: "Eu e você, sempre juntinhos" },
-  { arquivo: "fotos/2.jpg", mensagem: "Eu depois de espocar meu bucho no rodizio" },
-  { arquivo: "fotos/3.jpg", mensagem: "Eu e vc neném lindu" },
-  { arquivo: "fotos/4.jpg", mensagem: "Meu cantinho preferido é nos seus braços(tbm amo amo amo de ser a conchinha grande)" },
-  { arquivo: "fotos/5.jpg", mensagem: "A gente mimindo juntos" },
-  { arquivo: "fotos/6.jpg", mensagem: "a primeira figu que enviei pra vc" }
+  { arquivo: "1.jpg", mensagem: "Eu e você, sempre juntinhos" },
+  { arquivo: "2.jpg", mensagem: "Eu depois de espocar meu bucho no rodizio" },
+  { arquivo: "3.jpg", mensagem: "Eu e vc neném lindu" },
+  { arquivo: "4.jpg", mensagem: "Meu cantinho preferido é nos seus braços(tbm amo amo amo de ser a conchinha grande)" },
+  { arquivo: "5.jpg", mensagem: "A gente mimindo juntos" },
+  { arquivo: "6.jpg", mensagem: "a primeira figu que enviei pra vc" }
 ];
 
 const FRASES = [
